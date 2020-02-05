@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             Timber.d("movie data "+movies.get(0) + " size "+movies.size());
         });
      }
-
+    //init Timber logging
     private void initTimber() {
         if (BuildConfig.DEBUG){
             Timber.plant(new Timber.DebugTree());
