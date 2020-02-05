@@ -25,7 +25,7 @@ public class Movie
     private String overView;
 
     @SerializedName("genre_ids")
-    private int[] mGenreIds;
+    private int[] genreIds;
 
     private String mPackage;
 
@@ -36,7 +36,7 @@ public class Movie
         this.dbMovieId = dbMovieId;
         this.overView = overView;
         this.mPackage = mPackage;
-        this.mGenreIds = genreIds;
+        this.genreIds = genreIds;
     }
 
 
@@ -101,12 +101,12 @@ public class Movie
     }
 
 
-    public int[] getmGenreIds() {
-        return mGenreIds;
+    public int[] getGenreIds() {
+        return genreIds;
     }
 
-    public void setmGenreIds(int[] mGenreIds) {
-        this.mGenreIds = mGenreIds;
+    public void setGenreIds(int[] genreIds) {
+        this.genreIds = genreIds;
     }
 
     @NonNull
