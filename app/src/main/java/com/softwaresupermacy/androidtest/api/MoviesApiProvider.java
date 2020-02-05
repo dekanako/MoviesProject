@@ -6,10 +6,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MoviesApiProvider {
     private static MoviesApi sInstance;
 
-    private MoviesApiProvider() {
-    }
+    private MoviesApiProvider() {}
 
-    public static MoviesApi getMoviesApiInstance() {
+    public synchronized static MoviesApi getMoviesApiInstance() {
         if (sInstance == null){
             sInstance = new Retrofit.Builder()
                     .baseUrl(MoviesApi.BASE_MOVIES_URL)

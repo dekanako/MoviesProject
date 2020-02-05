@@ -2,11 +2,16 @@ package com.softwaresupermacy.androidtest.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 @Entity
 public class Movie
 {
+    @PrimaryKey(autoGenerate = true)
+    private int dbGenId;
+
     @SerializedName("poster_path")
     private String imageLink;
 
@@ -19,15 +24,19 @@ public class Movie
     @SerializedName("overview")
     private String overView;
 
+    @SerializedName("genre_ids")
+    private int[] mGenreIds;
+
     private String mPackage;
 
-    public Movie(String imageLink, String filmTitle,int dbMovieId, String overView, String mPackage)
+    public Movie(String imageLink, String filmTitle,int dbMovieId, String overView, String mPackage, int [] genreIds)
     {
         this.imageLink = imageLink;
         this.filmTitle = filmTitle;
         this.dbMovieId = dbMovieId;
         this.overView = overView;
         this.mPackage = mPackage;
+        this.mGenreIds = genreIds;
     }
 
 
@@ -67,12 +76,37 @@ public class Movie
         this.filmTitle = filmTitle;
     }
 
+    public String getPackage() {
+        return mPackage;
+    }
+
+    public void setPackage(String mPackage) {
+        this.mPackage = mPackage;
+    }
+
+    public int getDbGenId() {
+        return dbGenId;
+    }
+
+    public void setDbGenId(int dbGenId) {
+        this.dbGenId = dbGenId;
+    }
+
     public String getmPackage() {
         return mPackage;
     }
 
     public void setmPackage(String mPackage) {
         this.mPackage = mPackage;
+    }
+
+
+    public int[] getmGenreIds() {
+        return mGenreIds;
+    }
+
+    public void setmGenreIds(int[] mGenreIds) {
+        this.mGenreIds = mGenreIds;
     }
 
     @NonNull
