@@ -55,6 +55,7 @@ public class MoviesRepository {
                 @Override
                 public void onFailure(@NotNull Call<MoviesList> call, @NotNull Throwable t) { Timber.e(t); }
             });
+            Timber.d("test");
         }
         return observableMovies;
     }
