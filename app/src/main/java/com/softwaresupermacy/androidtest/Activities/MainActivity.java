@@ -19,9 +19,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initTimber();
         Timber.d("TEST");
-        MoviesRepository.getInstance(getApplication()).initMovieFetching(MoviesApi.POPULAR_PATH,MoviesApi.TOP_RATED_PATH,MoviesApi.UPCOMING_PATH).observe(this, movies -> {
-            Timber.d("movie data "+movies.get(0) + " size "+movies.size());
-        });
+        MoviesRepository.getInstance(getApplication()).initMovieFetching(MoviesApi.POPULAR_PATH,
+                MoviesApi.TOP_RATED_PATH,
+                MoviesApi.UPCOMING_PATH).observe(this, movies ->
+                Timber.d("movie data "+movies.get(0) + " size "+movies.size()));
      }
     //init Timber logging
     private void initTimber() {

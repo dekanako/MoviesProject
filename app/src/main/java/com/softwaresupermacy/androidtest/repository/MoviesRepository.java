@@ -30,6 +30,7 @@ public class MoviesRepository {
         this.mApiClient = MoviesApiProvider.getMoviesApiInstance();
         this.application = application;
     }
+
     public static MoviesRepository getInstance(Application application){
         if (sInstance == null){
             sInstance = new MoviesRepository(application);
@@ -41,7 +42,7 @@ public class MoviesRepository {
         MutableLiveData<List<Movie>> observableMovies = new MutableLiveData<>();
 
         List<Movie> movies = new ArrayList<>();
-
+        //Todo check the different versions of for loop
         for (String moviePackage: packages){
             mApiClient.getMovies(moviePackage, MoviesApi.API_KEY, MoviesApi.ENG_LANG_RESULT).enqueue(new Callback<MoviesList>() {
                 @Override
@@ -52,11 +53,10 @@ public class MoviesRepository {
                 }
 
                 @Override
-                public void onFailure(Call<MoviesList> call, Throwable t) {
-                    Timber.e(t);
-                }
+                public void onFailure(@NotNull Call<MoviesList> call, @NotNull Throwable t) { Timber.e(t); }
             });
         }
         return observableMovies;
     }
+
 }
