@@ -44,7 +44,6 @@ public class MoviesRepository {
     private void refreshData(String ...packages){
         mExecutor.execute(()->{
             boolean hasMovies = mDao.hasMovie() != null;
-            Timber.d(hasMovies + " hahya nya");
 
             if (!hasMovies){
                 List<Movie> movies = new ArrayList<>();
@@ -56,6 +55,7 @@ public class MoviesRepository {
                     mApiClient.getMovies(packages[i], MoviesApi.API_KEY, MoviesApi.ENG_LANG_RESULT).enqueue(new Callback<MoviesList>() {
                         @Override
                         public void onResponse(Call<MoviesList> call, Response<MoviesList> response) {
+                            Timber.d("thread name"+Thread.currentThread() );
                             List<Movie> modifiedMovies = RepositoryUtil.assignPackageDataType(packages[finalI], response.body().getmMovieList());
                             movies.addAll(modifiedMovies);
 
@@ -74,6 +74,7 @@ public class MoviesRepository {
     }
 
     public LiveData<List<Movie>> getData(String ...packages) {
+        Timber.d("Call to repo");
         refreshData(packages);
         return mDao.getAllMovies();
     }

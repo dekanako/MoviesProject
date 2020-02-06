@@ -1,21 +1,14 @@
 package com.softwaresupermacy.androidtest.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
 import com.facebook.stetho.Stetho;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.softwaresupermacy.androidtest.BuildConfig;
 import com.softwaresupermacy.androidtest.R;
-import com.softwaresupermacy.androidtest.api.GenresJson;
-import com.softwaresupermacy.androidtest.api.MoviesApi;
-import com.softwaresupermacy.androidtest.database.MovieDatabase;
-import com.softwaresupermacy.androidtest.database.dao.MoviesDao;
-import com.softwaresupermacy.androidtest.database.entity.GenreContainer;
-import com.softwaresupermacy.androidtest.database.entity.Movie;
-import com.softwaresupermacy.androidtest.repository.MoviesRepository;
+import com.softwaresupermacy.androidtest.viewmodels.MovieViewModel;
 
 import timber.log.Timber;
 
@@ -27,15 +20,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initTimber();
         initStetho();
-        initWebService();
 
-        MoviesRepository.getInstance(getApplication()).getData(MoviesApi.TOP_RATED_PATH,
-                MoviesApi.UPCOMING_PATH).observe(this, movies -> {
-                    Timber.d("size "+movies.size());
-        });
-    }
-    //Todo remove the direct call from activity to repository
-    private void initWebService() {
+        MovieViewModel model = new ViewModelProvider(this).get(MovieViewModel.class);
+        model.getObservableMovies().observe(this, movies ->
+                Timber.d(movies.size() + " SIZE"));
+
     }
 
     //init Timber logging
