@@ -20,4 +20,7 @@ public interface MoviesDao {
 
     @Insert
     void insertMovies(List<Movie> movie);
+
+    @Query("SELECT * FROM MOVIE LIMIT 1")
+    Movie hasMovie();
 }

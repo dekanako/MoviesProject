@@ -3,7 +3,6 @@ package com.softwaresupermacy.androidtest.repository;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.softwaresupermacy.androidtest.api.MoviesApi;
 import com.softwaresupermacy.androidtest.api.MoviesApiProvider;
@@ -13,8 +12,6 @@ import com.softwaresupermacy.androidtest.database.dao.MoviesDao;
 import com.softwaresupermacy.androidtest.database.entity.Movie;
 import com.softwaresupermacy.androidtest.database.entity.MoviesList;
 import com.softwaresupermacy.androidtest.repository.helpers.RepositoryUtil;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,34 +41,40 @@ public class MoviesRepository {
         return sInstance;
     }
 
-    public LiveData<List<Movie>> getLatestData(String ...packages){
-        MutableLiveData<List<Movie>> observableMovies = new MutableLiveData<>();
-        List<Movie> movies = new ArrayList<>();
+    private void refreshData(String ...packages){
+        mExecutor.execute(()->{
+            boolean hasMovies = mDao.hasMovie() != null;
+            Timber.d(hasMovies + " hahya nya");
 
-        //Todo check the different versions of for loop
-        for (int i = 0; i < packages.length; i++){
+            if (!hasMovies){
+                List<Movie> movies = new ArrayList<>();
 
-            int finalI = i;
-            mApiClient.getMovies(packages[i], MoviesApi.API_KEY, MoviesApi.ENG_LANG_RESULT).enqueue(new Callback<MoviesList>() {
-                @Override
-                public void onResponse(@NotNull Call<MoviesList> call, @NotNull Response<MoviesList> response) {
-                    List<Movie> modifiedMovies = RepositoryUtil.assignPackageDataType(packages[finalI], response.body().getmMovieList());
-                    movies.addAll(modifiedMovies);
+                //Todo check the different versions of for loop
+                for (int i = 0; i < packages.length; i++){
 
-                    if (finalI == (packages.length - 1)){
+                    int finalI = i;
+                    mApiClient.getMovies(packages[i], MoviesApi.API_KEY, MoviesApi.ENG_LANG_RESULT).enqueue(new Callback<MoviesList>() {
+                        @Override
+                        public void onResponse(Call<MoviesList> call, Response<MoviesList> response) {
+                            List<Movie> modifiedMovies = RepositoryUtil.assignPackageDataType(packages[finalI], response.body().getmMovieList());
+                            movies.addAll(modifiedMovies);
 
-                        mExecutor.execute(() ->
-                                mDao.insertMovies(movies));
+                            if (finalI == (packages.length - 1)){
+                                mExecutor.execute(()->
+                                        mDao.insertMovies(movies));
+                            }
+                        }
 
-                        observableMovies.setValue(movies);
-                    }
+                        @Override
+                        public void onFailure(Call<MoviesList> call, Throwable t) { Timber.e(t); }
+                    });
                 }
-
-                @Override
-                public void onFailure(@NotNull Call<MoviesList> call, @NotNull Throwable t) { Timber.e(t); }
-            });
-        }
-        return observableMovies;
+            }
+        });
     }
 
+    public LiveData<List<Movie>> getData(String ...packages) {
+        refreshData(packages);
+        return mDao.getAllMovies();
+    }
 }
