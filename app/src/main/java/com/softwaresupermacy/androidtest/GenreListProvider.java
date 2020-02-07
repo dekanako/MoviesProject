@@ -11,7 +11,6 @@ import java.util.List;
 public class GenreListProvider {
 
     public static List<Genre> getGenres() {
-
         GenreContainer genres = new Gson().fromJson(GenresJson.GENRE_LIST,
                 new TypeToken<GenreContainer>(){}.getType());
 

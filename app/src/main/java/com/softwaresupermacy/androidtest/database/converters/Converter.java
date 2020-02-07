@@ -1,17 +1,10 @@
 package com.softwaresupermacy.androidtest.database.converters;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.TypeConverter;
 
 import com.softwaresupermacy.androidtest.GenreListProvider;
-import com.softwaresupermacy.androidtest.database.MovieDatabase;
-import com.softwaresupermacy.androidtest.database.entity.Genre;
-import com.softwaresupermacy.androidtest.database.entity.Movie;
-import com.softwaresupermacy.androidtest.database.entity.PackagedMovie;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.softwaresupermacy.androidtest.database.entity.Genre;
 
 
 public class Converter {
@@ -29,7 +22,7 @@ public class Converter {
 
             }
             if ((count < (numbers.length-1))){
-                genreBuilder.append(", ");
+                genreBuilder.append("/");
             }
         }
         return genreBuilder.toString();

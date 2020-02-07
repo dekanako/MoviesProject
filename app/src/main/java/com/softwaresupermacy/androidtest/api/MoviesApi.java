@@ -13,6 +13,7 @@ public interface MoviesApi {
     String POPULAR_PATH = "popular";
     String TOP_RATED_PATH = "top_rated";
     String UPCOMING_PATH = "upcoming";
+    String NOW_PLAYING  = "now_playing";
 
     String ENG_LANG_RESULT = "en-US";
     String API_KEY = "90429cbb0771760ab50be543df397f62";

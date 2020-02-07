@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         binding.mainList.setLayoutManager(new LinearLayoutManager(this));
         model.getObservablePackages().observe(this, packagedMovies -> {
             Timber.d("Size " + packagedMovies.size());
-            binding.mainList.setAdapter(new MainListAdapter(getBaseContext(), packagedMovies));
+            binding.mainList.setAdapter(new MainListAdapter(getBaseContext(), packagedMovies, model.getGenres()));
         });
 
     }

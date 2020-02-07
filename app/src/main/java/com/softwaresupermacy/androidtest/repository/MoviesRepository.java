@@ -5,11 +5,13 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.softwaresupermacy.androidtest.GenreListProvider;
 import com.softwaresupermacy.androidtest.api.MoviesApi;
 import com.softwaresupermacy.androidtest.api.MoviesApiProvider;
 import com.softwaresupermacy.androidtest.database.AppExecutors;
 import com.softwaresupermacy.androidtest.database.MovieDatabase;
 import com.softwaresupermacy.androidtest.database.dao.MoviesDao;
+import com.softwaresupermacy.androidtest.database.entity.Genre;
 import com.softwaresupermacy.androidtest.database.entity.Movie;
 import com.softwaresupermacy.androidtest.database.entity.MoviesList;
 import com.softwaresupermacy.androidtest.database.entity.PackagedMovie;
@@ -55,7 +57,9 @@ public class MoviesRepository {
         });
         return mutableLiveData;
     }
-
+    public List<Genre> getGenresList(){
+        return GenreListProvider.getGenres();
+    }
     private void refreshMovies(String[] packs){
             boolean hasMovies = mDao.hasMovie() == null ? false : true;
             if (!hasMovies) {
