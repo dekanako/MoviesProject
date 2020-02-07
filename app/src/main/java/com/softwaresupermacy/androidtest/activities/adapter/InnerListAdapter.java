@@ -10,7 +10,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.softwaresupermacy.androidtest.R;
+import com.softwaresupermacy.androidtest.StringCheck;
 import com.softwaresupermacy.androidtest.api.NetworkingUtil;
 import com.softwaresupermacy.androidtest.database.entity.Movie;
 import com.softwaresupermacy.androidtest.databinding.InnerListItemBinding;
@@ -39,9 +42,10 @@ public class InnerListAdapter extends RecyclerView.Adapter<InnerListAdapter.Inne
     @Override
     public void onBindViewHolder(@NonNull InnerListViewHolder holder, int position) {
         Timber.d(mMovies.get(position).getFilmTitle());
-        holder.mBinding.movieTitleId.setText(mMovies.get(position).getFilmTitle());
+        holder.mBinding.movieTitleId.setText(StringCheck.stringFixer(mMovies.get(position).getFilmTitle()));
         Glide.with(mContext).load(NetworkingUtil.buildPhotoURL(mMovies.get(position).getImageLink(),
-                NetworkingUtil.POSTER_IMAGE_W500)).into(holder.mBinding.posterViewId);
+                NetworkingUtil.POSTER_IMAGE_W500)).apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
+                .into(holder.mBinding.posterViewId);
 
     }
 
