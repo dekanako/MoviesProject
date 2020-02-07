@@ -2,26 +2,21 @@ package com.softwaresupermacy.androidtest.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.facebook.stetho.Stetho;
 import com.softwaresupermacy.androidtest.BuildConfig;
 import com.softwaresupermacy.androidtest.R;
 
-import com.softwaresupermacy.androidtest.api.MoviesApi;
-import com.softwaresupermacy.androidtest.database.MovieDatabase;
-import com.softwaresupermacy.androidtest.database.entity.Movie;
-import com.softwaresupermacy.androidtest.database.entity.PackagedMovie;
+import com.softwaresupermacy.androidtest.activities.adapter.MainListAdapter;
 import com.softwaresupermacy.androidtest.databinding.ActivityMainBinding;
 import com.softwaresupermacy.androidtest.viewmodels.MovieViewModel;
 
 
-import java.util.List;
+
 
 import timber.log.Timber;
 
@@ -34,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
         initTimber();
         initStetho();
         MovieViewModel model = new ViewModelProvider(this).get(MovieViewModel.class);
-
+        binding.mainList.setLayoutManager(new LinearLayoutManager(this));
         model.getObservablePackages().observe(this, packagedMovies -> {
             Timber.d("Size " + packagedMovies.size());
-
+            binding.mainList.setAdapter(new MainListAdapter(getBaseContext(), packagedMovies));
         });
 
     }

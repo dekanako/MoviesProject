@@ -48,6 +48,7 @@ public class MoviesRepository {
 
     public LiveData<List<PackagedMovie>> getPackagedMovie(String ...packs){
         MutableLiveData<List<PackagedMovie>> mutableLiveData = new MutableLiveData<>();
+
         AppExecutors.getInstance().diskIO().execute(()->{
             refreshMovies(packs);
             getPackagedMovies(mutableLiveData);
@@ -79,13 +80,13 @@ public class MoviesRepository {
                 Timber.d("End");
             }
     }
-
+    //:TODO fix the capital function
     private void getPackagedMovies(MutableLiveData<List<PackagedMovie>> mutableLiveData) {
         List<String> storedPacks = mDao.getPackages();
         List<PackagedMovie> packagedMovies = new ArrayList<>();
         for (int xx = 0; xx < storedPacks.size(); xx++) {
             List<Movie> pass = mDao.getMoviesByPackages(storedPacks.get(xx));
-            packagedMovies.add(new PackagedMovie(pass, storedPacks.get(xx)));
+            packagedMovies.add(new PackagedMovie(pass,RepositoryUtil.capitizeString( storedPacks.get(xx))));
             if (xx == (storedPacks.size() - 1)) {
                 mutableLiveData.postValue(packagedMovies);
             }

@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.softwaresupermacy.androidtest.api.MoviesApi;
-import com.softwaresupermacy.androidtest.database.entity.Movie;
 import com.softwaresupermacy.androidtest.database.entity.PackagedMovie;
 import com.softwaresupermacy.androidtest.repository.MoviesRepository;
 
