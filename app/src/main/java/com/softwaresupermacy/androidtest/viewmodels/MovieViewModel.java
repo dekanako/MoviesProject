@@ -19,7 +19,8 @@ public class MovieViewModel extends AndroidViewModel {
 
         MoviesRepository repository = MoviesRepository.getInstance(application);
 
-        mObservablePackages = repository.getPackagedMovie(MoviesApi.POPULAR_PATH,
+        mObservablePackages = repository.getPackagedMovie(MoviesApi.UPCOMING_PATH,
+                MoviesApi.POPULAR_PATH,
                 MoviesApi.TOP_RATED_PATH);
     }
     public LiveData<List<PackagedMovie>> getObservablePackages() {

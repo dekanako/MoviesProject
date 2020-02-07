@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.softwaresupermacy.androidtest.R;
@@ -37,6 +38,9 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
     @Override
     public void onBindViewHolder(@NonNull MainListViewHolder holder, int position) {
         holder.mBinding.setPack(mPackagedMovieList.get(position));
+        holder.mBinding.innerList.setLayoutManager(new LinearLayoutManager(mContext,
+                LinearLayoutManager.HORIZONTAL, false));
+        holder.mBinding.innerList.setAdapter(new InnerListAdapter(mPackagedMovieList.get(position).getMovies(),mContext));
     }
 
     @Override
