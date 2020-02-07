@@ -11,16 +11,16 @@ import java.util.List;
 
 @Dao
 public interface MoviesDao {
-
-    @Query("SELECT * FROM Movie")
-    LiveData<List<Movie>> getAllMovies();
-
-    @Insert
-    void insertMovies(Movie ...movie);
-
     @Insert
     void insertMovies(List<Movie> movie);
 
     @Query("SELECT * FROM MOVIE LIMIT 1")
     Movie hasMovie();
+
+    @Query("SELECT DISTINCT Movie.mPackage FROM Movie")
+    List<String>getPackages();
+
+    @Query("SELECT * FROM Movie WHERE Movie.mPackage = :passedPackage")
+    List<Movie> getMoviesByPackages(String passedPackage);
+
 }

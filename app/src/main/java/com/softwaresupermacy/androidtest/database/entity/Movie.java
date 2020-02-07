@@ -1,6 +1,7 @@
 package com.softwaresupermacy.androidtest.database.entity;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -16,6 +17,7 @@ public class Movie
     private String imageLink;
 
     @SerializedName("title")
+    @ColumnInfo(name = "ganres")
     private String filmTitle;
 
     @SerializedName("id")

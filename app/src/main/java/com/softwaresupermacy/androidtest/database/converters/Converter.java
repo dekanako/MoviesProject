@@ -1,9 +1,17 @@
 package com.softwaresupermacy.androidtest.database.converters;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.TypeConverter;
 
 import com.softwaresupermacy.androidtest.GenreListProvider;
+import com.softwaresupermacy.androidtest.database.MovieDatabase;
 import com.softwaresupermacy.androidtest.database.entity.Genre;
+import com.softwaresupermacy.androidtest.database.entity.Movie;
+import com.softwaresupermacy.androidtest.database.entity.PackagedMovie;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Converter {
@@ -27,10 +35,10 @@ public class Converter {
         return genreBuilder.toString();
     }
 
+    //TODO Fix this TypeConverter
     @TypeConverter
     public static int [] fromGenreString(String genre){
         return new int[]{34,23,32};
     }
-
 
 }
