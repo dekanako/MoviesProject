@@ -22,5 +22,6 @@ public interface MoviesDao {
 
     @Query("SELECT * FROM Movie WHERE Movie.mPackage = :passedPackage")
     List<Movie> getMoviesByPackages(String passedPackage);
-
+    @Query("DELETE FROM Movie")
+    void deleteAll();
 }

@@ -14,6 +14,7 @@ import com.softwaresupermacy.androidtest.database.entity.Genre;
 import com.softwaresupermacy.androidtest.database.entity.PackagedMovie;
 import com.softwaresupermacy.androidtest.databinding.MainRecyclerViewListItemBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainListViewHolder> {
@@ -22,10 +23,10 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
     private List<PackagedMovie> mPackagedMovieList;
     private List<Genre> mGenres;
 
-    public MainListAdapter(Context context, List<PackagedMovie> packagedMovieList, List<Genre> genres) {
+    public MainListAdapter(Context context) {
         mContext = context;
-        mPackagedMovieList = packagedMovieList;
-        this.mGenres = genres;
+        mPackagedMovieList = new ArrayList<>();
+        this.mGenres = new ArrayList<>();
     }
 
     @Override
@@ -68,7 +69,23 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
 
     @Override
     public int getItemCount() {
+        if (mPackagedMovieList.size() == 0){
+            return mPackagedMovieList.size();
+        }
         return mPackagedMovieList.size() + 1;
+    }
+
+    public void setMovies(List<PackagedMovie> movieList, List<Genre> genres) {
+        mPackagedMovieList.addAll(movieList);
+        mGenres.addAll(genres);
+
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        mPackagedMovieList.clear();
+        mGenres.clear();
+        notifyDataSetChanged();
     }
 
     class MainListViewHolder extends RecyclerView.ViewHolder{

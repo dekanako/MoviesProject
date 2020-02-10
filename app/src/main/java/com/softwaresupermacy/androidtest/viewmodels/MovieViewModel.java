@@ -16,17 +16,17 @@ import java.util.List;
 public class MovieViewModel extends AndroidViewModel {
     private LiveData<List<PackagedMovie>> mObservablePackages;
     private List<Genre> mGenres;
+    private MoviesRepository mRepository;
+    private String[] mPackages;
 
-    public MovieViewModel(@NonNull Application application) {
+    public MovieViewModel(@NonNull Application application, String ...packages) {
         super(application);
 
-        MoviesRepository repository = MoviesRepository.getInstance(application);
+        mRepository = MoviesRepository.getInstance(application);
+        this.mPackages = packages;
 
-        mObservablePackages = repository.getPackagedMovie(MoviesApi.UPCOMING_PATH,
-                MoviesApi.POPULAR_PATH,
-                MoviesApi.TOP_RATED_PATH,
-                MoviesApi.NOW_PLAYING);
-        mGenres = repository.getGenresList();
+        mObservablePackages = mRepository.getPackagedMovie(packages);
+        mGenres = mRepository.getGenresList();
     }
 
     public List<Genre> getGenres() {
@@ -37,4 +37,8 @@ public class MovieViewModel extends AndroidViewModel {
         return mObservablePackages;
     }
 
+
+    public void refreshData(String ...packs) {
+        mRepository.forceRefresh(packs);
+    }
 }

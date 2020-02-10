@@ -42,11 +42,17 @@ public class InnerListAdapter extends RecyclerView.Adapter<InnerListAdapter.Inne
     @Override
     public void onBindViewHolder(@NonNull InnerListViewHolder holder, int position) {
         Timber.d(mMovies.get(position).getFilmTitle());
+        holder.mBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Timber.d("lol");
+            }
+        });
         holder.mBinding.movieTitleId.setText(StringCheck.stringFixer(mMovies.get(position).getFilmTitle()));
         //TODO fic the genre
 //        holder.mBinding.genres.setText(mMovies.get(position).get);
         Glide.with(mContext).load(NetworkingUtil.buildPhotoURL(mMovies.get(position).getImageLink(),
-                NetworkingUtil.POSTER_IMAGE_W500)).apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
+                NetworkingUtil.POSTER_IMAGE_W500)).apply(RequestOptions.bitmapTransform(new RoundedCorners(25)))
                 .into(holder.mBinding.posterViewId);
 
     }

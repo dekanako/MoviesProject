@@ -31,12 +31,13 @@ public class MoviesRepository {
     private static MoviesRepository sInstance;
     private MoviesApi mApiClient;
     private MoviesDao mDao;
-    private Executor mExecutor;
+    //set the livedata as a  global varible to avoid recreating and referencing it again
+    private MutableLiveData<List<PackagedMovie>> mListMutableLiveData;
 
     private MoviesRepository(Application application) {
         this.mApiClient = MoviesApiProvider.getMoviesApiInstance();
         this.mDao = MovieDatabase.getInstance(application).dao();
-        mExecutor = AppExecutors.getInstance().diskIO();
+        mListMutableLiveData = new MutableLiveData<>();
     }
 
     public synchronized static MoviesRepository getInstance(Application application){
@@ -46,25 +47,39 @@ public class MoviesRepository {
         return sInstance;
     }
 
-
-
-    public LiveData<List<PackagedMovie>> getPackagedMovie(String ...packs){
-        MutableLiveData<List<PackagedMovie>> mutableLiveData = new MutableLiveData<>();
-
-        AppExecutors.getInstance().diskIO().execute(()->{
-            refreshMovies(packs);
-            getPackagedMovies(mutableLiveData);
-        });
-        return mutableLiveData;
-    }
     public List<Genre> getGenresList(){
         return GenreListProvider.getGenres();
     }
-    private void refreshMovies(String[] packs){
+
+    public LiveData<List<PackagedMovie>> getPackagedMovie(String ...packs){
+         //first init
+        Timber.d("First Init");
+        AppExecutors.getInstance().diskIO().execute(()->{
+            refreshMovies(false ,packs);
+            getPackagedMovies(mListMutableLiveData);
+            Timber.d("outputting data");
+        });
+        return mListMutableLiveData;
+    }
+
+
+
+    public void forceRefresh(String []packs){
+        AppExecutors.getInstance().diskIO().execute(()->{
+            Timber.d("Force refresh entered");
+            mDao.deleteAll();
+            Timber.d("DatabaseContent Deleted");
+            refreshMovies(true, packs);
+            Timber.d("Database content refreshed");
+            getPackagedMovies(mListMutableLiveData);
+            Timber.d("outputing data");
+        });
+    }
+    private void refreshMovies(boolean forceRefresh, String ...packs){
             boolean hasMovies = mDao.hasMovie() == null ? false : true;
-            if (!hasMovies) {
-                Timber.d("Start");
-                List<Movie> movies = new ArrayList<>();
+            if (!hasMovies || forceRefresh) {
+                Timber.d("Force refresh is : " +forceRefresh + " fetching from network");
+                 List<Movie> movies = new ArrayList<>();
 
                 for (int x = 0; x<packs.length; x++){
                     Timber.d("1");
@@ -81,7 +96,7 @@ public class MoviesRepository {
                         mDao.insertMovies(movies);
                     }
                 }
-                Timber.d("End");
+
             }
     }
     //:TODO fix the capital function
@@ -95,7 +110,7 @@ public class MoviesRepository {
                 mutableLiveData.postValue(packagedMovies);
             }
         }
-        Timber.d("end");
+
     }
 
 

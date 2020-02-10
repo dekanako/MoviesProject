@@ -1,7 +1,7 @@
 package com.softwaresupermacy.androidtest.activities.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
+
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,6 +13,8 @@ import com.softwaresupermacy.androidtest.database.entity.Genre;
 import com.softwaresupermacy.androidtest.databinding.GenreListItemBinding;
 
 import java.util.List;
+
+
 
 class GenreListAdapter extends RecyclerView.Adapter<GenreListAdapter.GenreListViewHolder> {
     private List<Genre> mGenres;
@@ -32,7 +34,10 @@ class GenreListAdapter extends RecyclerView.Adapter<GenreListAdapter.GenreListVi
 
     @Override
     public void onBindViewHolder(@NonNull GenreListViewHolder holder, int position) {
+
         holder.mBinding.genreButton.setText(mGenres.get(position).getName());
+
+
     }
 
     @Override
@@ -45,6 +50,7 @@ class GenreListAdapter extends RecyclerView.Adapter<GenreListAdapter.GenreListVi
         public GenreListViewHolder(@NonNull GenreListItemBinding binding) {
             super(binding.getRoot());
             this.mBinding = binding;
+
         }
     }
 }
