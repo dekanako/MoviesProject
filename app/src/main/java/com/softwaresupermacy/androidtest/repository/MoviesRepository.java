@@ -96,7 +96,6 @@ public class MoviesRepository {
                         mDao.insertMovies(movies);
                     }
                 }
-
             }
     }
     //:TODO fix the capital function
@@ -110,7 +109,6 @@ public class MoviesRepository {
                 mutableLiveData.postValue(packagedMovies);
             }
         }
-
     }
 
 

@@ -1,5 +1,6 @@
 package com.softwaresupermacy.androidtest.activities.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.softwaresupermacy.androidtest.databinding.MainRecyclerViewListItemBin
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainListViewHolder> {
     private static final int GENRE_TYPE = -1;
@@ -48,6 +51,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
         return new MainListViewHolder(mainBinding);
     }
     //TODO add pendingExecute tayaraa muhym
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MainListViewHolder holder, int position) {
 
@@ -56,15 +60,23 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
 
         if (getItemViewType(position) == GENRE_TYPE){
             holder.mBinding.innerList.setAdapter(new GenreListAdapter(mGenres));
+            holder.mBinding.textView2.setText("");
+            holder.mBinding.packageTitle.setText("Genres");
             return;
         }
         if (position > 1){
             position = position -1;
         }
         holder.mBinding.packageTitle.setText(mPackagedMovieList.get(position).getPackage());
-
-
         holder.mBinding.innerList.setAdapter(new InnerListAdapter(mPackagedMovieList.get(position).getMovies(),mContext));
+
+        holder.mBinding.textView2.setOnClickListener( r->{
+            startDetailActivity();
+        });
+    }
+
+    private void startDetailActivity(){
+
     }
 
     @Override
