@@ -1,6 +1,7 @@
 package com.softwaresupermacy.androidtest;
 
 
+import timber.log.Timber;
 
 public class StringCheck
 {
@@ -15,8 +16,20 @@ public class StringCheck
         }
         return x;
     }
-    //Todo complete this method to provide a consistent  width
-//    public static String genreFixer(String s){
-//        StringBuilder builder = new StringBuilder();
-//     }
+    public static String genreFixer(String s){
+        StringBuilder builder = new StringBuilder();
+        String[] genreArray = s.split("/");
+        int leng = genreArray.length > 2 ? 2 : genreArray.length;
+
+        for (int x = 0; x < leng; x++){
+            builder.append(genreArray[x]);
+            if (x != 1){
+                builder.append('/');
+            }
+        }
+        if (genreArray.length > 2){
+            builder.append("...");
+        }
+        return builder.toString();
+    }
 }

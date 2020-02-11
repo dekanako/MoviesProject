@@ -48,7 +48,7 @@ public class InnerListAdapter extends RecyclerView.Adapter<InnerListAdapter.Inne
         //TODO fic the genre
 //        holder.mBinding.genres.setText(mMovies.get(position).get);
         holder.mBinding.genreseView.setText(
-                StringCheck.stringFixer(mMovies.get(position).getGenresString().getGenreString())
+                StringCheck.genreFixer(mMovies.get(position).getGenresString().getGenreString())
         );
         Glide.with(mContext).load(NetworkingUtil.buildPhotoURL(mMovies.get(position).getImageLink(),
                 NetworkingUtil.POSTER_IMAGE_W500)).apply(RequestOptions.bitmapTransform(new RoundedCorners(25)))
