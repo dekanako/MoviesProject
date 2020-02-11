@@ -15,4 +15,8 @@ public class StringCheck
         }
         return x;
     }
+    //Todo complete this method to provide a consistent  width
+//    public static String genreFixer(String s){
+//        StringBuilder builder = new StringBuilder();
+//     }
 }

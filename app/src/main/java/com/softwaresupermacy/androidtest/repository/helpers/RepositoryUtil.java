@@ -13,7 +13,11 @@ public class RepositoryUtil {
         List<Movie> packagedMovieList = new ArrayList<>();
         Timber.d(moviePackage);
         for (Movie movie: movies){
-            packagedMovieList.add(new Movie(movie.getImageLink(), movie.getFilmTitle(), movie.getDbMovieId(),movie.getOverView(), moviePackage, movie.getGenreIds()));
+            packagedMovieList.add(new Movie(movie.getImageLink(),
+                    movie.getFilmTitle(),
+                    movie.getDbMovieId(),
+                    movie.getOverView(), moviePackage,
+                    movie.getGenresString()));
         }
         Timber.d(packagedMovieList.get(0).toString());
         return packagedMovieList;
