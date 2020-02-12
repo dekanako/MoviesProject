@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.work.Data;
+import androidx.work.WorkManager;
 
 import com.softwaresupermacy.androidtest.GenreListProvider;
 import com.softwaresupermacy.androidtest.api.MoviesApi;
@@ -17,14 +19,12 @@ import com.softwaresupermacy.androidtest.database.entity.Movie;
 import com.softwaresupermacy.androidtest.database.entity.MoviesList;
 import com.softwaresupermacy.androidtest.database.entity.PackagedMovie;
 import com.softwaresupermacy.androidtest.repository.helpers.RepositoryUtil;
+import com.softwaresupermacy.androidtest.repository.work.WorkUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -32,6 +32,7 @@ public class MoviesRepository {
     private static MoviesRepository sInstance;
     private MoviesApi mApiClient;
     private MoviesDao mDao;
+    private Application mApplication;
     //set the livedata as a  global varible to avoid recreating and referencing it again
     private MutableLiveData<List<PackagedMovie>> mListMutableLiveData;
 
@@ -39,6 +40,7 @@ public class MoviesRepository {
         this.mApiClient = MoviesApiProvider.getMoviesApiInstance();
         this.mDao = MovieDatabase.getInstance(application).dao();
         mListMutableLiveData = new MutableLiveData<>();
+        mApplication = application;
     }
 
     public synchronized static MoviesRepository getInstance(Application application){
@@ -81,6 +83,13 @@ public class MoviesRepository {
     private void refreshMovies(boolean forceRefresh, String ...packs){
             boolean hasMovies = mDao.hasMovie() == null ? false : true;
             if (!hasMovies || forceRefresh) {
+                Data data = new Data.Builder()
+                        .putStringArray(WorkUtil.DATA_INPUT_ID, packs)
+                        .build();
+
+                WorkManager.getInstance(mApplication)
+                        .enqueue(WorkUtil.periodicWorkRequest(data));
+
                 Timber.d("Force refresh is : " +forceRefresh + " fetching from network");
                  List<Movie> movies = new ArrayList<>();
 

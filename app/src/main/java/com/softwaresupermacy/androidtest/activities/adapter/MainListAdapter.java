@@ -100,7 +100,6 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
 
     public void clear() {
         mPackagedMovieList.clear();
-
         mGenres.clear();
         notifyDataSetChanged();
     }
