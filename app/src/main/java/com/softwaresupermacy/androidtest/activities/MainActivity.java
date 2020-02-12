@@ -5,6 +5,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.facebook.stetho.Stetho;
 import com.softwaresupermacy.androidtest.BuildConfig;
 import com.softwaresupermacy.androidtest.R;
@@ -27,28 +29,31 @@ public class MainActivity extends AppCompatActivity {
             MoviesApi.TOP_RATED_PATH,
             MoviesApi.UPCOMING_PATH};
 
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //initializing the views and the lists
+        initTimber();
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mMainListAdapter = new MainListAdapter(this);
         mBinding.mainList.setAdapter(mMainListAdapter);
         mBinding.mainList.setLayoutManager(new LinearLayoutManager(this));
         mBinding.swipeLayout.setRefreshing(true);
 
-        initTimber();
+
         initStetho();
 
         mModel = new ViewModelProvider(this,new MovieViewModelFactory(getApplication(), requestedPackages))
                 .get(MovieViewModel.class);
 
         mModel.getObservablePackages().observe(this, movieList -> {
+            mMainListAdapter.clear();
             mMainListAdapter.setMovies(movieList, mModel.getGenres());
             mBinding.swipeLayout.setRefreshing(false);
         });
-
         mBinding.swipeLayout.setOnRefreshListener(()-> {
+            Log.d(TAG, "Refresh listener");
             mMainListAdapter.clear();
             mModel.refreshData(requestedPackages);
         });
@@ -67,5 +72,11 @@ public class MainActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG){
             Stetho.initializeWithDefaults(this);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMainListAdapter.clear();
     }
 }

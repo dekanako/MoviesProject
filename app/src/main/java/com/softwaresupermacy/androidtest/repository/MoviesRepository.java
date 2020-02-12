@@ -1,6 +1,7 @@
 package com.softwaresupermacy.androidtest.repository;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -51,7 +52,9 @@ public class MoviesRepository {
         return GenreListProvider.getGenres();
     }
 
+    private static final String TAG = "MoviesRepository";
     public LiveData<List<PackagedMovie>> getPackagedMovie(String ...packs){
+        Log.d(TAG, "packaged movies");
          //first init
         Timber.d("First Init");
         AppExecutors.getInstance().diskIO().execute(()->{
@@ -66,13 +69,13 @@ public class MoviesRepository {
 
     public void forceRefresh(String []packs){
         AppExecutors.getInstance().diskIO().execute(()->{
-            Timber.d("Force refresh entered");
+            Log.d(TAG,"Post Val");
             mDao.deleteAll();
-            Timber.d("DatabaseContent Deleted");
+
             refreshMovies(true, packs);
-            Timber.d("Database content refreshed");
+
             getPackagedMovies(mListMutableLiveData);
-            Timber.d("outputing data");
+
         });
     }
     private void refreshMovies(boolean forceRefresh, String ...packs){
@@ -106,6 +109,7 @@ public class MoviesRepository {
             List<Movie> pass = mDao.getMoviesByPackages(storedPacks.get(xx));
             packagedMovies.add(new PackagedMovie(pass,RepositoryUtil.capitizeString( storedPacks.get(xx))));
             if (xx == (storedPacks.size() - 1)) {
+                Log.d(TAG, "POST VALUE");
                 mutableLiveData.postValue(packagedMovies);
             }
         }

@@ -2,6 +2,7 @@ package com.softwaresupermacy.androidtest.activities.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -51,12 +52,13 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
         return new MainListViewHolder(mainBinding);
     }
     //TODO add pendingExecute tayaraa muhym
-    @SuppressLint("SetTextI18n")
-    @Override
+     @Override
     public void onBindViewHolder(@NonNull MainListViewHolder holder, int position) {
 
         holder.mBinding.innerList.setLayoutManager(new LinearLayoutManager(mContext,
                 LinearLayoutManager.HORIZONTAL, false));
+        Timber.d("On Bind");
+        Timber.d("Size "+mPackagedMovieList.size());
 
         if (getItemViewType(position) == GENRE_TYPE){
             holder.mBinding.innerList.setAdapter(new GenreListAdapter(mGenres));
@@ -91,11 +93,14 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
         mPackagedMovieList.addAll(movieList);
         mGenres.addAll(genres);
 
+
+
         notifyDataSetChanged();
     }
 
     public void clear() {
         mPackagedMovieList.clear();
+
         mGenres.clear();
         notifyDataSetChanged();
     }

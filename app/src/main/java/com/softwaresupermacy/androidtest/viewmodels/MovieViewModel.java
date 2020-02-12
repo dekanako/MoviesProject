@@ -1,6 +1,7 @@
 package com.softwaresupermacy.androidtest.viewmodels;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -13,17 +14,20 @@ import com.softwaresupermacy.androidtest.repository.MoviesRepository;
 
 import java.util.List;
 
+
 public class MovieViewModel extends AndroidViewModel {
     private LiveData<List<PackagedMovie>> mObservablePackages;
     private List<Genre> mGenres;
     private MoviesRepository mRepository;
     private String[] mPackages;
-
+    private static final String TAG = "MovieViewModel";
     public MovieViewModel(@NonNull Application application, String ...packages) {
         super(application);
 
         mRepository = MoviesRepository.getInstance(application);
         this.mPackages = packages;
+        Log.d(TAG, "ViewModel");
+
 
         mObservablePackages = mRepository.getPackagedMovie(packages);
         mGenres = mRepository.getGenresList();
